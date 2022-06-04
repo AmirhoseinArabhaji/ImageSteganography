@@ -43,7 +43,7 @@ def encode():
 
     # hidden information and secret key to binary
     hidden_info_binary = ''.join([f'{byte:0{8}b}' for byte in hidden_info])
-    secret_key_binary = ''.join([f'{byte:0{8}b}' for byte in bytearray(secret_key, "utf8")])
+    secret_key_binary = ''.join([f'{byte:0{8}b}' for byte in bytearray(secret_key, 'utf8')])
 
     # get width and height of image
     width, height = image.size
@@ -85,7 +85,6 @@ def encode():
 
     # saving steg image
     image.save('./steg.png', format='png')
-    image.save('./steg.jpg', )
 
 
 def decode():
@@ -104,9 +103,10 @@ def decode():
     length_of_data = int(length_of_data, 2)
 
     secret_key = input('enter your secret key: ')
-    secret_key_binary = ''.join([f'{byte:0{8}b}' for byte in bytearray(secret_key, "utf8")])
+    secret_key = secret_key * (length_of_data // len(secret_key) + 1)
+    secret_key_binary = ''.join([f'{byte:0{8}b}' for byte in bytearray(secret_key, 'utf8')])
 
-    hidden_info = ''
+    hidden_info_bin = ''
 
     # counter for data length
     counter = 0
@@ -120,9 +120,15 @@ def decode():
                 # xoring for determining if hidden info stored in lsb of blue or green
                 xor = operator.xor(int(bin(red)[-1]), int(secret_key_binary[counter]))
 
-                hidden_info += bin(green if xor == 1 else blue)[-1]
+                hidden_info_bin += bin(green if xor == 1 else blue)[-1]
 
                 counter += 1
+
+    hidden_info = ''
+    for i in range(0, len(hidden_info_bin), 8):
+        hidden_info += chr(int(hidden_info_bin[i: i + 8], 2))
+
+    print(hidden_info)
 
 
 if args.encode:
