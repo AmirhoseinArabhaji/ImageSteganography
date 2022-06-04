@@ -1,3 +1,5 @@
 venv/**
 .idea/**
 steg.jpg
+steg.png
+secret_key.txt
