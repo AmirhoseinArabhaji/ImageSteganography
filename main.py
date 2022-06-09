@@ -7,12 +7,12 @@ from PIL import Image
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', dest='cover_image_path', type=str, help='cover image path')
 parser.add_argument('-s', dest='stegano_image', type=str, help='steganographed image')
-parser.add_argument('--encode', action='store_true', help='encoding')
-parser.add_argument('--decode', action='store_true', help='decoding')
+parser.add_argument('--hide', action='store_true', help='hiding data')
+parser.add_argument('--extract', action='store_true', help='extracting data')
 args = parser.parse_args()
 
 
-def encode():
+def hide():
     # opening image and get pixel map if image
     image = Image.open(args.cover_image_path)
     pixel_map = image.load()
@@ -87,7 +87,7 @@ def encode():
     image.save('./steg.png', format='png')
 
 
-def decode():
+def extract():
     # opening image and get pixel map if image
     image = Image.open(args.stegano_image)
     pixel_map = image.load()
@@ -128,10 +128,11 @@ def decode():
     for i in range(0, len(hidden_info_bin), 8):
         hidden_info += chr(int(hidden_info_bin[i: i + 8], 2))
 
-    print(hidden_info)
+    with open('./extracted_data.txt', 'w') as f:
+        f.write(hidden_info)
 
 
 if args.encode:
-    encode()
+    hide()
 elif args.decode:
-    decode()
+    extract()
