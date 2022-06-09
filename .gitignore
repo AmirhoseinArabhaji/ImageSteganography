@@ -3,3 +3,4 @@ venv/**
 steg.jpg
 steg.png
 secret_key.txt
+extracted_data.txt

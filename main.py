@@ -21,7 +21,8 @@ def hide():
     with open('./data.txt', 'rb') as f:
         hidden_info = f.read()
 
-    length_by_bit = len(hidden_info)
+    length_by_byte = len(hidden_info)
+    length_by_bit = length_by_byte * 8
 
     # creating secret key
     # for example a sha256 hash key
@@ -32,7 +33,7 @@ def hide():
     hex_hash_key = hash_key.hexdigest()
 
     # make secret key same length with the hidden information
-    secret_key = hex_hash_key * (length_by_bit // len(hex_hash_key) + 1)
+    secret_key = hex_hash_key * (length_by_byte // len(hex_hash_key) + 1)
 
     # saving secret key
     with open('secret_key.txt', 'w') as f:
@@ -132,7 +133,7 @@ def extract():
         f.write(hidden_info)
 
 
-if args.encode:
+if args.hide:
     hide()
-elif args.decode:
+elif args.extract:
     extract()
