@@ -6,7 +6,7 @@ from PIL import Image
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-c', dest='cover_image_path', type=str, help='cover image path')
-parser.add_argument('-s', dest='stegano_image', type=str, help='steganographed image')
+parser.add_argument('-s', dest='stego_image', type=str, help='stego image')
 parser.add_argument('--hide', action='store_true', help='hiding data')
 parser.add_argument('--extract', action='store_true', help='extracting data')
 args = parser.parse_args()
@@ -90,7 +90,7 @@ def hide():
 
 def extract():
     # opening image and get pixel map if image
-    image = Image.open(args.stegano_image)
+    image = Image.open(args.stego_image)
     pixel_map = image.load()
 
     width, height = image.size
